@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"yumandhika/golang-rest-api/services/users"
@@ -8,18 +9,20 @@ import (
 
 type APIServer struct {
 	addr string
+	db   *sql.DB
 }
 
-func NewAPIServer(addr string) *APIServer {
+func NewAPIServer(addr string, db *sql.DB) *APIServer {
 	return &APIServer{
 		addr: addr,
+		db:   db,
 	}
 }
 
 func (s *APIServer) Run() error {
 	router := http.NewServeMux()
-
-	userHandler := users.NewHandler()
+	userStore := users.NewStore(s.db)
+	userHandler := users.NewHandler(userStore)
 	userHandler.RegisterRoutes(router)
 
 	v1 := http.NewServeMux()

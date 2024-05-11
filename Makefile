@@ -1,11 +1,11 @@
 build:
-	@go build -o yumandhika/golang-rest-api cmd/main.go
+	@go build -o bin/golang-rest-api cmd/main.go
 
 test:
 	@go test -v ./...
 	
 run: build
-	@./yumandhika/golang-rest-api
+	@./bin/golang-rest-api
 
 migration:
 	@migrate create -ext sql -dir cmd/migrate/migrations $(filter-out $@,$(MAKECMDGOALS))

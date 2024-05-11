@@ -7,10 +7,10 @@ import (
 	"yumandhika/golang-rest-api/db"
 	"yumandhika/golang-rest-api/types"
 
-	_ "github.com/go-sql-driver/mysql" // mysql driver
 	"github.com/golang-migrate/migrate/v4"
-	mysqlMigrate "github.com/golang-migrate/migrate/v4/database/mysql"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -27,14 +27,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	driver, err := mysqlMigrate.WithInstance(db, &mysqlMigrate.Config{})
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://cmd/migrate/migrations",
-		"mysql",
+		"postgres",
 		driver,
 	)
 	if err != nil {

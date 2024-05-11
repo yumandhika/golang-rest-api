@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"yumandhika/golang-rest-api/cmd/api"
 	"yumandhika/golang-rest-api/configs"
@@ -24,7 +25,7 @@ func main() {
 	}
 
 	initStorage(db)
-	server := api.NewAPIServer(":8080")
+	server := api.NewAPIServer(fmt.Sprintf(":%s", configs.Envs.Port), db)
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}
