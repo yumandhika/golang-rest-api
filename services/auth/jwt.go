@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"time"
 	"yumandhika/golang-rest-api/configs"
-	"yumandhika/golang-rest-api/types"
 	"yumandhika/golang-rest-api/utils"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -18,7 +17,7 @@ type contextKey string
 
 const UserKey contextKey = "userID"
 
-func WithJWTAuth(handlerFunc http.HandlerFunc, store types.UserStore) http.HandlerFunc {
+func WithJWTAuth(handlerFunc http.HandlerFunc, store AuthStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenString := utils.GetTokenFromRequest(r)
 

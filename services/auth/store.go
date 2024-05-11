@@ -1,4 +1,4 @@
-package users
+package auth
 
 import (
 	"database/sql"
@@ -11,15 +11,6 @@ type Store struct {
 
 func NewStore(db *sql.DB) *Store {
 	return &Store{db: db}
-}
-
-func (s *Store) CreateUser(user User) error {
-	_, err := s.db.Exec("INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)", user.FirstName, user.LastName, user.Email, user.Password)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *Store) GetUserByEmail(email string) (*User, error) {
@@ -62,6 +53,15 @@ func (s *Store) GetUserByID(id int) (*User, error) {
 	}
 
 	return u, nil
+}
+
+func (s *Store) CreateUser(user User) error {
+	_, err := s.db.Exec("INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)", user.FirstName, user.LastName, user.Email, user.Password)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func scanRowsIntoUser(rows *sql.Rows) (*User, error) {

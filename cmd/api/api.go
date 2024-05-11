@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"yumandhika/golang-rest-api/services/auth"
 	"yumandhika/golang-rest-api/services/users"
 )
 
@@ -21,6 +22,10 @@ func NewAPIServer(addr string, db *sql.DB) *APIServer {
 
 func (s *APIServer) Run() error {
 	router := http.NewServeMux()
+	authStore := auth.NewStore(s.db)
+	authHandler := auth.NewHandler(authStore)
+	authHandler.RegisterRoutes(router)
+
 	userStore := users.NewStore(s.db)
 	userHandler := users.NewHandler(userStore)
 	userHandler.RegisterRoutes(router)
