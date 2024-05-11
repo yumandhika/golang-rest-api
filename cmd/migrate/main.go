@@ -17,12 +17,12 @@ func main() {
 	cfg := types.DatabaseConfig{
 		User:     configs.Envs.DBUser,
 		Password: configs.Envs.DBPassword,
-		Host:     configs.Envs.DBAddress,
-		Port:     configs.Envs.DBPort,
+		Host:     configs.Envs.DBHost,
+		Port:     int(configs.Envs.DBPort),
 		Name:     configs.Envs.DBName,
 	}
 
-	db, err := db.NewMySQLStorage(cfg)
+	db, err := db.ConnectToPostgreSQL(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
